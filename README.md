@@ -2,6 +2,11 @@
 
 A responsive e-commerce dashboard built with Next.js 15 - featuring product listing, filtering, cart functionality and pagination.
 
+A brief overview of the app -
+
+<img width="1904" height="1078" alt="image" src="https://github.com/user-attachments/assets/3b8b7cf8-1a8b-4fdf-b58a-148c6696f552" />
+
+
 ## Features
 
 - **Product Listing**: Display products from Fake Store API with images, titles, prices and categories
