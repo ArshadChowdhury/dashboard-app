@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "./components/Header";
+import Header from "@/components/others/Header";
+import Footer from "@/components/others/Footer";
 import Providers from "./providers/tanstackProvider";
 import "./globals.css";
 
@@ -31,7 +32,10 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          <main className="min-h-screen bg-gray-50 py-20">{children}</main>
+          <main className="min-h-screen bg-gray-50 py-20 max-w-7xl mx-auto">
+            {children}
+          </main>
+          <Footer />
         </Providers>
       </body>
     </html>

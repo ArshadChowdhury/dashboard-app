@@ -1,12 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../lib/axios";
+import axiosInstance from "@/app/lib/axios";
 
 const fetchCategories = async () => {
-  const { data } = await axiosInstance.get(
-    "https://fakestoreapi.com/products/categories"
-  );
+  const { data } = await axiosInstance.get("products/categories");
   return data;
 };
 
@@ -21,7 +19,35 @@ export default function CategoryFilter({
   });
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-8">
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+      {/* Quick Category Pills */}
+      <div className="hidden mb-6 lg:flex justify-center flex-wrap gap-2">
+        <button
+          onClick={() => onCategoryChange("")}
+          className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+            selectedCategory === ""
+              ? "bg-blue-600 text-white shadow-md"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          All
+        </button>
+        {!isLoading &&
+          categories?.slice(0, 4).map((category: any) => (
+            <button
+              key={category}
+              onClick={() => onCategoryChange(category)}
+              className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 capitalize ${
+                selectedCategory === category
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {category.replace(/'/g, "'")}
+            </button>
+          ))}
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Search Bar */}
         <div className="flex-1">
@@ -51,7 +77,7 @@ export default function CategoryFilter({
         </div>
 
         {/* Category Filter */}
-        <div className="lg:w-80">
+        <div className="lg:hidden lg:w-80">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg
@@ -119,34 +145,6 @@ export default function CategoryFilter({
             <span>Apply Filters</span>
           </button>
         </div>
-      </div>
-
-      {/* Quick Category Pills */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        <button
-          onClick={() => onCategoryChange("")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-            selectedCategory === ""
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          All
-        </button>
-        {!isLoading &&
-          categories?.slice(0, 4).map((category: any) => (
-            <button
-              key={category}
-              onClick={() => onCategoryChange(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 capitalize ${
-                selectedCategory === category
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {category.replace(/'/g, "'")}
-            </button>
-          ))}
       </div>
     </div>
   );

@@ -1,11 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import axiosInstance from "@/app/lib/axios";
-import CategoryFilter from "@/app/components/CategoryFilter";
-import ProductCard from "@/app/components/ProductCard";
+import CategoryFilter from "@/components/others/CategoryFilter";
+import ProductCard from "@/components/others/ProductCard";
+import Pagination from "@/components/others/Pagination";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel, // You might not need SelectLabel for a simple sort, but included for completeness
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const fetchProducts = async (category = "") => {
   const url = category ? `/products/category/${category}` : "/products";
@@ -15,6 +25,9 @@ const fetchProducts = async (category = "") => {
 
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+  const [sortOption, setSortOption] = useState("Best Match");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
@@ -36,9 +49,41 @@ export default function ProductsPage() {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const filteredProducts = products?.filter((product: any) =>
-    product.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-  );
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+    return products.filter((product: any) =>
+      product.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    );
+  }, [products, debouncedSearchTerm]);
+
+  // Sort the filtered products
+  const sortedProducts = useMemo(() => {
+    const sorted = [...filteredProducts];
+
+    switch (sortOption) {
+      case "Price: Low to High":
+        return sorted.sort((a, b) => a.price - b.price);
+      case "Price: High to Low":
+        return sorted.sort((a, b) => b.price - a.price);
+      case "Customer Reviews":
+        return sorted.sort((a, b) => b.rating.rate - a.rating.rate);
+      // case "Newest":
+      //   return sorted.sort(
+      //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      //   ); // assuming product.createdAt exists
+      case "Newest": // As we don't have the createAt property in the api, we can't sort it as newest.
+        return sorted.sort(() => Math.random() - 0.5);
+      default:
+        return sorted; // Best Match (default)
+    }
+  }, [filteredProducts, sortOption]);
+
+  // Paginate the sorted list
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return sortedProducts.slice(start, start + itemsPerPage);
+  }, [sortedProducts, currentPage]);
 
   if (isLoading) {
     return (
@@ -110,26 +155,81 @@ export default function ProductsPage() {
             </h1>
           </div>
 
-          <div className="mt-4 sm:mt-0 flex items-center space-x-4">
+          {/* <div className="mt-4 sm:mt-0 flex items-center space-x-4">
             <span className="text-sm text-gray-700">Sort by</span>
-            <select className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            <select
+              className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              value={sortOption}
+              onChange={(e) => {
+                setSortOption(e.target.value);
+                setCurrentPage(1); // reset to page 1 on sort change
+              }}
+            >
               <option>Best Match</option>
               <option>Price: Low to High</option>
               <option>Price: High to Low</option>
               <option>Customer Reviews</option>
               <option>Newest</option>
             </select>
+          </div> */}
+
+          <div className="mt-4 sm:mt-0 flex items-center space-x-4">
+            <span className="text-sm text-gray-700">Sort by</span>
+            <Select
+              value={sortOption} // Controlled component: display the current value
+              onValueChange={(value) => {
+                // Shadcn Select uses onValueChange
+                setSortOption(value);
+                setCurrentPage(1); // reset to page 1 on sort change
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                {/* The placeholder will show if sortOption is empty/null, otherwise the selected value */}
+                <SelectValue placeholder="Select a sort option" />
+              </SelectTrigger>
+              <SelectContent>
+                {/* If you don't need a label (like "Fruits" in your demo), you can remove SelectGroup and SelectLabel */}
+                {/* <SelectGroup> */}
+                {/* <SelectLabel>Sort Options</SelectLabel> */}
+                <SelectItem value="Best Match">Best Match</SelectItem>
+                <SelectItem value="Price: Low to High">
+                  Price: Low to High
+                </SelectItem>
+                <SelectItem value="Price: High to Low">
+                  Price: High to Low
+                </SelectItem>
+                <SelectItem value="Customer Reviews">
+                  Customer Reviews
+                </SelectItem>
+                <SelectItem value="Newest">Newest</SelectItem>
+                <SelectItem value="Random">Random</SelectItem>{" "}
+                {/* Added your new random option */}
+                {/* </SelectGroup> */}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
         {/* Products Grid */}
         <div className="pb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {filteredProducts?.map((product: any) => (
+            {/* {filteredProducts?.map((product: any) => (
+              <ProductCard key={product.id} product={product} />
+            ))} */}
+
+            {paginatedProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </div>
+
+        {/* {totalPages > 1 && ( */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page: any) => setCurrentPage(page)}
+        />
+        {/* )} */}
 
         {/* Empty State */}
         {filteredProducts?.length === 0 && (

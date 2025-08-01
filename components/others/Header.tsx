@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
-import { useCartStore } from "../stores/useCartStore";
+import { useCartStore } from "@/app/stores/useCartStore";
 
 export default function Header() {
   const { getCartItemCount } = useCartStore();
 
   return (
     <header className="bg-white shadow-lg fixed w-full top-0 z-50 border-b border-gray-100">
-      <div className="container mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-4">
         <nav className="flex justify-between items-center">
           <Link
             href="/"

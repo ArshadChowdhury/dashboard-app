@@ -54,7 +54,6 @@ export default function ProductDetail() {
 
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-gray-800">{product.title}</h1>
-
           <div className="flex items-center space-x-4">
             <span className="text-2xl font-bold text-green-600">
               ${product.price}

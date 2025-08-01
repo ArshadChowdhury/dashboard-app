@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCartStore } from "../stores/useCartStore";
+import { useCartStore } from "@/app/stores/useCartStore";
 import { useState } from "react";
 
 export default function ProductCard({ product }: any) {
