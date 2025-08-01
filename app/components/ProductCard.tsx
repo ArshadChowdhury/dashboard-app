@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "../stores/useCartStore";
@@ -14,7 +15,7 @@ export default function ProductCard({ product }: any) {
     addToCart(product);
   };
 
-  const truncateTitle = (title: string, maxLength = 50) => {
+  const truncateTitle = (title: string, maxLength = 30) => {
     return title.length > maxLength
       ? title.substring(0, maxLength) + "..."
       : title;
@@ -22,7 +23,7 @@ export default function ProductCard({ product }: any) {
 
   return (
     <Link href={`/products/${product.id}`} className="group block">
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200">
         {/* Product Image */}
         <div className="relative aspect-square bg-gray-50 overflow-hidden">
           {!imageLoaded && (
@@ -34,6 +35,8 @@ export default function ProductCard({ product }: any) {
             src={product.image}
             alt={product.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
             className={`object-contain p-4 group-hover:scale-105 transition-transform duration-200 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
@@ -42,15 +45,17 @@ export default function ProductCard({ product }: any) {
         </div>
 
         {/* Product Info */}
-        <div className="p-3">
+        <div className="p-4">
           {/* Title */}
           <h3 className="text-sm text-gray-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors">
             {truncateTitle(product.title)}
           </h3>
 
+          <span className="text-sm">{product.category}</span>
+
           {/* Rating */}
           {product.rating && (
-            <div className="flex items-center mb-2">
+            <div className="flex items-center my-2">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <svg
@@ -85,7 +90,7 @@ export default function ProductCard({ product }: any) {
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium py-2 px-3 rounded-md transition-colors duration-200"
+            className="w-full mt-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium py-2 px-3 rounded-md transition-colors duration-200 cursor-pointer"
           >
             Add to Cart
           </button>

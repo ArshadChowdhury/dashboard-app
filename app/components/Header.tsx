@@ -18,7 +18,7 @@ export default function Header() {
 
           <div className="hidden md:flex space-x-8 items-center">
             <Link
-              href="/"
+              href="/products"
               className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
             >
               Products

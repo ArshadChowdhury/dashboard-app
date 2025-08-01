@@ -1,13 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ProductCard from "./components/ProductCard";
-import CategoryFilter from "./components/CategoryFilter";
-import axiosInstance from "./lib/axios";
+import ProductCard from "../components/ProductCard";
+import CategoryFilter from "../components/CategoryFilter";
+import axiosInstance from "../lib/axios";
 
 const fetchProducts = async (category = "") => {
   const url = category ? `/products/category/${category}` : "/products";
-  // const { data } = axiosInstance.get(url);
   const response = await axiosInstance.get(url);
   return response.data;
 };
