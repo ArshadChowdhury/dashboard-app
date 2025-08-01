@@ -7,6 +7,9 @@ A brief overview of the app -
 <img width="1904" height="1078" alt="image" src="https://github.com/user-attachments/assets/3b8b7cf8-1a8b-4fdf-b58a-148c6696f552" />
 
 
+## Live URL of the app - https://dashboard-app-swart-two.vercel.app/
+
+
 ## Features
 
 - **Product Listing**: Display products from Fake Store API with images, titles, prices and categories
@@ -31,8 +34,9 @@ A brief overview of the app -
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Run development server: `npm run dev`
-4. Open [http://localhost:3000](http://localhost:3000)
+3. Create a .env.local and copy/paste the required key of env from .env.example and use the fakeapi url as value 
+4. Run development server: `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
 
