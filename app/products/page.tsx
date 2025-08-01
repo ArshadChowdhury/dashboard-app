@@ -72,14 +72,8 @@ export default function ProductsPage() {
         return sorted.sort((a, b) => b.rating.rate - a.rating.rate);
       case "Customer Reviews (Negative)":
         return sorted.sort((a, b) => a.rating.rate - b.rating.rate);
-      // case "Newest":
-      //   return sorted.sort(
-      //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      //   ); // assuming product.createdAt exists
-      case "Newest": // As we don't have the createAt property in the api, we can't sort it as newest.
-        return sorted.sort(() => Math.random() - 0.5);
       default:
-        return sorted; // Best Match (default)
+        return sorted;
     }
   }, [filteredProducts, sortOption]);
 
@@ -95,10 +89,10 @@ export default function ProductsPage() {
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+            <div className="h-8 bg-gray-200 rounded w-1/4 mx-auto mb-6"></div>
             <div className="h-12 bg-gray-200 rounded mb-8"></div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {[...Array(20)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              {[...Array(4)].map((_, i) => (
                 <div
                   key={i}
                   className="bg-gray-100 aspect-square rounded"
