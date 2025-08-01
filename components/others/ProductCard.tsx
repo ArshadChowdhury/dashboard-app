@@ -4,12 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "@/app/stores/useCartStore";
 import { useState } from "react";
+import { Product } from "@/app/common/common-type";
 
-export default function ProductCard({ product }: any) {
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCartStore();
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const handleAddToCart = (e: any) => {
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);

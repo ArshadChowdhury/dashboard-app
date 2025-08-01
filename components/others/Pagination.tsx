@@ -2,11 +2,17 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
 export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}: any) {
+}: PaginationProps) {
   const generatePageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 4;
@@ -43,9 +49,10 @@ export default function Pagination({
     return pages;
   };
 
-  const handlePageChange = (page: any) => {
+  const handlePageChange = (page: string | number) => {
     if (
       page !== "..." &&
+      typeof page === "number" &&
       page !== currentPage &&
       page >= 1 &&
       page <= totalPages

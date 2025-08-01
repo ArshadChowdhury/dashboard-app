@@ -1,6 +1,12 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import axiosInstance from "../lib/axios";
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
 
 export default function AddProduct() {
   const [formData, setFormData] = useState({
@@ -13,11 +19,9 @@ export default function AddProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
-
-    console.log(formData);
 
     try {
       await axiosInstance.post("https://fakestoreapi.com/products", {
@@ -39,16 +43,20 @@ export default function AddProduct() {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Add New Product</h1>
+      <h1 className="text-3xl text-center md:text-left font-bold text-gray-800 my-10">
+        Add New Product
+      </h1>
 
       {success && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">

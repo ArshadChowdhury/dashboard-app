@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Product } from "../common/common-type";
 
 const fetchProducts = async (category = "") => {
   try {
@@ -53,7 +54,7 @@ export default function ProductsPage() {
 
   const filteredProducts = useMemo(() => {
     if (!products) return [];
-    return products.filter((product: any) =>
+    return products.filter((product: Product) =>
       product.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
   }, [products, debouncedSearchTerm]);
@@ -195,11 +196,7 @@ export default function ProductsPage() {
         {/* Products Grid */}
         <div className="pb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {/* {filteredProducts?.map((product: any) => (
-              <ProductCard key={product.id} product={product} />
-            ))} */}
-
-            {paginatedProducts.map((product: any) => (
+            {paginatedProducts.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -209,7 +206,7 @@ export default function ProductsPage() {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page: any) => setCurrentPage(page)}
+            onPageChange={(page: number) => setCurrentPage(page)}
           />
         )}
 

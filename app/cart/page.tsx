@@ -3,6 +3,7 @@
 import { useCartStore } from "../stores/useCartStore";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import { CartItem } from "../stores/useCartStore";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } =
@@ -22,7 +23,7 @@ export default function Cart() {
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
 
       <div className="space-y-4">
-        {cart.map((item: any) => (
+        {cart.map((item: CartItem) => (
           <div key={item.id} className="bg-white p-4 rounded-lg shadow-md">
             <div className="flex flex-col lg:flex-row items-center gap-4">
               <div className="relative w-20 h-20">
@@ -30,6 +31,7 @@ export default function Cart() {
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain"
                 />
               </div>
@@ -45,14 +47,18 @@ export default function Cart() {
 
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                  onClick={() =>
+                    updateQuantity(item.id.toString(), item.quantity - 1)
+                  }
                   className="bg-gray-200 px-2 py-1 rounded cursor-pointer"
                 >
                   -
                 </button>
                 <span className="mx-2">{item.quantity}</span>
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                  onClick={() =>
+                    updateQuantity(item.id.toString(), item.quantity + 1)
+                  }
                   className="bg-gray-200 px-2 py-1 rounded cursor-pointer"
                 >
                   +
@@ -64,7 +70,7 @@ export default function Cart() {
                   ${(item.price * item.quantity).toFixed(2)}
                 </p>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeFromCart(item.id.toString())}
                   className="cursor-pointer text-red-600 hover:text-red-800 text-sm"
                 >
                   Remove

@@ -12,11 +12,17 @@ const fetchCategories = async () => {
   }
 };
 
+interface CategoryFilterProps {
+  selectedCategory: string;
+  onCategoryChange: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
 export default function CategoryFilter({
   selectedCategory,
   onCategoryChange,
   onSearch,
-}: any) {
+}: CategoryFilterProps) {
   const { data: categories, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
@@ -37,7 +43,7 @@ export default function CategoryFilter({
           All
         </button>
         {!isLoading &&
-          categories?.slice(0, 4).map((category: any) => (
+          categories?.slice(0, 4).map((category: string) => (
             <button
               key={category}
               onClick={() => onCategoryChange(category)}
@@ -105,7 +111,7 @@ export default function CategoryFilter({
             >
               <option value="">All Categories</option>
               {!isLoading &&
-                categories?.map((category: any) => (
+                categories?.map((category: string) => (
                   <option key={category} value={category}>
                     {category.charAt(0).toUpperCase() +
                       category.slice(1).replace(/'/g, "'")}
