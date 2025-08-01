@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# E-commerce Dashboard
 
-## Getting Started
+A responsive e-commerce dashboard built with Next.js 15 - featuring product listing, filtering, cart functionality and pagination.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Product Listing**: Display products from Fake Store API with images, titles, prices and categories
+- **Category Filtering**: Filter products by category with dropdown selection
+- **Search**: Debounced search functionality for products
+- **Product Details**: Individual product pages with full details and ratings
+- **Shopping Cart**: Add/remove items, quantity management, cart total calculation
+- **Add Product**: Form to simulate adding new products
+- **Responsive Design**: Mobile-first design using Tailwind CSS
+- **State Management**: React Query for server state, Zustand for cart state
+
+## Tech Stack
+
+- Next.js 15 (App Router)
+- React 19
+- TanStack Query (React Query)
+- Tailwind CSS + Shadcn
+- Fake Store API
+- Axios
+
+## Setup Instructions
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run development server: `npm run dev`
+4. Open [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
+
+```
+app/
+├── stores/            # Zustand store setup for cart
+├── providers/         # Tanstack query provider setup
+├── products/          # Fetched all product from fake api in here
+  ├── [id]/            # Dynamic product detail pages
+├── cart/              # Cart page
+├── lib/               # Axios instance is initiated here
+├── common/               # Common helper functions & types are defined here
+├── add-product/       # Add product form
+└── page.js            # Not accessible because didn't design a landing page
+components/          # Reusable components
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Integration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Products: `https://fakestoreapi.com/products`
+- Categories: `https://fakestoreapi.com/products/categories`
+- Product Details: `https://fakestoreapi.com/products/:id`
+- Add Product: `https://fakestoreapi.com/products` (POST - simulated)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design Choices
 
-## Learn More
+- **Next.js App Router**: Modern routing with server components where beneficial
+- **TanStack Query**: Efficient data fetching with caching and loading states
+- **Zustand**: Simple cart state management with minimal global state management library
+- **Tailwind CSS**: Utility-first CSS for rapid development and responsive design
+- **Component Architecture**: Modular, reusable components for maintainability
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Potential Improvements
+- Implement server-side rendering for better performance ( wanted to do it but couldn't due to time constraint)
+- Implement pagination for large product lists (Couldn't do it by API because the API didn't support it)
+- Add product sorting options (Should've sorted price, rating, name by API - again didn't support)
+- Add user authentication and user-specific carts
