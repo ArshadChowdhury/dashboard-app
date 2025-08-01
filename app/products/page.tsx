@@ -10,17 +10,19 @@ import Pagination from "@/components/others/Pagination";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel, // You might not need SelectLabel for a simple sort, but included for completeness
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
 const fetchProducts = async (category = "") => {
-  const url = category ? `/products/category/${category}` : "/products";
-  const response = await axiosInstance.get(url);
-  return response.data;
+  try {
+    const url = category ? `/products/category/${category}` : "/products";
+    const response = await axiosInstance.get(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default function ProductsPage() {
@@ -65,8 +67,10 @@ export default function ProductsPage() {
         return sorted.sort((a, b) => a.price - b.price);
       case "Price: High to Low":
         return sorted.sort((a, b) => b.price - a.price);
-      case "Customer Reviews":
+      case "Customer Reviews (Positive)":
         return sorted.sort((a, b) => b.rating.rate - a.rating.rate);
+      case "Customer Reviews (Negative)":
+        return sorted.sort((a, b) => a.rating.rate - b.rating.rate);
       // case "Newest":
       //   return sorted.sort(
       //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -134,7 +138,7 @@ export default function ProductsPage() {
         {/* Results Header */}
         <div className="py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-normal text-gray-900">
+            <h1 className="text-2xl text-center lg:text-left font-normal text-gray-900">
               {selectedCategory ? (
                 <>
                   <span className="capitalize">
@@ -155,25 +159,7 @@ export default function ProductsPage() {
             </h1>
           </div>
 
-          {/* <div className="mt-4 sm:mt-0 flex items-center space-x-4">
-            <span className="text-sm text-gray-700">Sort by</span>
-            <select
-              className="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              value={sortOption}
-              onChange={(e) => {
-                setSortOption(e.target.value);
-                setCurrentPage(1); // reset to page 1 on sort change
-              }}
-            >
-              <option>Best Match</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Customer Reviews</option>
-              <option>Newest</option>
-            </select>
-          </div> */}
-
-          <div className="mt-4 sm:mt-0 flex items-center space-x-4">
+          <div className="mt-4 sm:mt-0 flex justify-center items-center gap-4">
             <span className="text-sm text-gray-700">Sort by</span>
             <Select
               value={sortOption} // Controlled component: display the current value
@@ -188,9 +174,6 @@ export default function ProductsPage() {
                 <SelectValue placeholder="Select a sort option" />
               </SelectTrigger>
               <SelectContent>
-                {/* If you don't need a label (like "Fruits" in your demo), you can remove SelectGroup and SelectLabel */}
-                {/* <SelectGroup> */}
-                {/* <SelectLabel>Sort Options</SelectLabel> */}
                 <SelectItem value="Best Match">Best Match</SelectItem>
                 <SelectItem value="Price: Low to High">
                   Price: Low to High
@@ -198,13 +181,12 @@ export default function ProductsPage() {
                 <SelectItem value="Price: High to Low">
                   Price: High to Low
                 </SelectItem>
-                <SelectItem value="Customer Reviews">
-                  Customer Reviews
+                <SelectItem value="Customer Reviews (Positive)">
+                  Customer Reviews (Positive)
                 </SelectItem>
-                <SelectItem value="Newest">Newest</SelectItem>
-                <SelectItem value="Random">Random</SelectItem>{" "}
-                {/* Added your new random option */}
-                {/* </SelectGroup> */}
+                <SelectItem value="Customer Reviews (Negative)">
+                  Customer Reviews (Negative)
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -223,13 +205,13 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {/* {totalPages > 1 && ( */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page: any) => setCurrentPage(page)}
-        />
-        {/* )} */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page: any) => setCurrentPage(page)}
+          />
+        )}
 
         {/* Empty State */}
         {filteredProducts?.length === 0 && (

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import toast from "react-hot-toast";
 
 export interface CartItem {
   id: string;
@@ -15,6 +16,7 @@ interface CartState {
   updateQuantity: (productId: string, quantity: number) => void;
   getCartTotal: () => number;
   getCartItemCount: () => number;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -37,12 +39,20 @@ export const useCartStore = create<CartState>((set, get) => ({
         cart: [...cart, { ...product, quantity: 1 }],
       });
     }
+
+    toast.success("Added item to cart successfully !!");
   },
 
   removeFromCart: (productId) => {
     set((state) => ({
       cart: state.cart.filter((item) => item.id !== productId),
     }));
+
+    toast.success("Removed item from cart successfully !!");
+  },
+
+  clearCart: () => {
+    set({ cart: [] });
   },
 
   updateQuantity: (productId, quantity) => {

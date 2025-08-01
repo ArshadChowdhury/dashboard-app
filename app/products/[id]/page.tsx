@@ -1,14 +1,19 @@
 "use client";
+
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "@/app/lib/axios";
 import Image from "next/image";
 import { useCartStore } from "@/app/stores/useCartStore";
 import { useParams } from "next/navigation";
 import { ParamValue } from "next/dist/server/request/params";
 
 const fetchProduct = async (id: ParamValue) => {
-  const { data } = await axios.get(`https://fakestoreapi.com/products/${id}`);
-  return data;
+  try {
+    const { data } = await axiosInstance.get(`/products/${id}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default function ProductDetail() {
@@ -18,7 +23,7 @@ export default function ProductDetail() {
   const {
     data: product,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ["product", params.id],
     queryFn: () => fetchProduct(params.id),
@@ -32,7 +37,7 @@ export default function ProductDetail() {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="text-center text-red-600 py-8">
         Error loading product. Please try again later.

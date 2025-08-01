@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 export default function AddProduct() {
   const [formData, setFormData] = useState({
@@ -17,9 +17,10 @@ export default function AddProduct() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    console.log(formData);
+
     try {
-      // Simulate API call
-      await axios.post("https://fakestoreapi.com/products", {
+      await axiosInstance.post("https://fakestoreapi.com/products", {
         ...formData,
         price: parseFloat(formData.price),
       });

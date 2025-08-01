@@ -159,7 +159,7 @@ const Footer = () => {
             <p className="text-blue-100 text-sm">
               &copy; {new Date().getFullYear()} MyStore. All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-2 md:mt-0">
+            <div className="flex flex-col sm:flex-row gap-2 mt-2 md:mt-0">
               <Link
                 href="#"
                 className="text-blue-100 hover:text-white text-sm transition-colors duration-200"
