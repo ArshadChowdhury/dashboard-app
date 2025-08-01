@@ -1,9 +1,11 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ProductCard from "../components/ProductCard";
-import CategoryFilter from "../components/CategoryFilter";
-import axiosInstance from "../lib/axios";
+
+import axiosInstance from "@/app/lib/axios";
+import CategoryFilter from "@/app/components/CategoryFilter";
+import ProductCard from "@/app/components/ProductCard";
 
 const fetchProducts = async (category = "") => {
   const url = category ? `/products/category/${category}` : "/products";
@@ -11,7 +13,7 @@ const fetchProducts = async (category = "") => {
   return response.data;
 };
 
-export default function Home() {
+export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -29,7 +31,8 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 300);
+    }, 500);
+
     return () => clearTimeout(timer);
   }, [searchTerm]);
 

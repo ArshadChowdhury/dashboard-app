@@ -1,9 +1,10 @@
 "use client";
+
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 const fetchCategories = async () => {
-  const { data } = await axios.get(
+  const { data } = await axiosInstance.get(
     "https://fakestoreapi.com/products/categories"
   );
   return data;
