@@ -20,7 +20,7 @@ export default function Cart() {
 
   return (
     <div className="max-w-7xl mx-auto my-10">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Your Cart</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8 px-4">Your Cart</h1>
 
       <div className="space-y-4">
         {cart.map((item: CartItem) => (
