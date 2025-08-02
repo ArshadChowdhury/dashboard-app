@@ -6,10 +6,17 @@ import Image from "next/image";
 import { useCartStore } from "@/app/stores/useCartStore";
 import { useParams } from "next/navigation";
 import { ParamValue } from "next/dist/server/request/params";
+import Link from "next/link";
 
 const fetchProduct = async (id: ParamValue) => {
   try {
     const { data } = await axiosInstance.get(`/products/${id}`);
+
+    // Handle cases where the product is invalid or empty
+    if (!data || Object.keys(data).length === 0 || !data.id || !data.title) {
+      throw new Error("Product not found");
+    }
+
     return data;
   } catch (error) {
     console.error(error);
@@ -39,8 +46,11 @@ export default function ProductDetail() {
 
   if (isError) {
     return (
-      <div className="text-center text-red-600 py-8">
-        Error loading product. Please try again later.
+      <div className="text-center text-red-600 py-8 flex flex-col gap-4">
+        Error 404, this product was not found !!
+        <Link className="underline text-blue-500" href="/products">
+          Go back to products
+        </Link>
       </div>
     );
   }
